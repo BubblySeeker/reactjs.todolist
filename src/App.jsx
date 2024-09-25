@@ -11,6 +11,8 @@ function App() {
 
   const [entry, setEntry] = useState('')
 
+  const [editIndex, setEditIndex] = useState(null);
+
   function persist(newList) {
     localStorage.setItem('todos', JSON.stringify({ todos:
     newList}))
@@ -19,6 +21,16 @@ function App() {
     const newTodoList = [newTodo, ...todos]
     persist(newTodoList)
     setTodos(newTodoList)
+  }
+
+  function addTodoAtIndex(newTodo, index) {
+    const newTodoList = [
+      ...todos.slice(0, index), 
+      newTodo, 
+      ...todos.slice(index)
+    ];
+    persist(newTodoList);
+    setTodos(newTodoList);
   }
 
   function deleteTodo(index) {
@@ -34,8 +46,20 @@ function App() {
   function editTodo(index) {
     const editVal = todos[index]
     setEntry(editVal)
+    setEditIndex(index);
     deleteTodo(index)
 
+  }
+
+
+  function handleAddOrUpdate() {
+    if (editIndex !== null) { 
+      addTodoAtIndex(entry, editIndex); 
+      setEditIndex(null); 
+    } else {
+      addTodos(entry); 
+    }
+    setEntry(''); 
   }
 
   useEffect(() => {
@@ -55,7 +79,8 @@ function App() {
 
   return (
   
-      <><TodoInput entry={entry} setEntry={setEntry}addTodos = {addTodos}/>
+      <><TodoInput entry={entry} setEntry={setEntry}addTodos = {addTodos} handleAddOrUpdate={handleAddOrUpdate}
+      isEditing={editIndex !== null}/>
       <TodoList editTodo = {editTodo} deleteTodo={deleteTodo} todos={todos}/></>
 
 
