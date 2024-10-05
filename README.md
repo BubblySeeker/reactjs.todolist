@@ -3,7 +3,7 @@
 
 basic project to learn about javascript, css, html, and react.
 
-https://cooplist.netlify.app/
+
 
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
